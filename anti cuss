@@ -1,0 +1,53 @@
+#Originally coded by jxd/Landen
+
+import discord
+import time
+import colorama
+import ctypes
+from colorama import Fore
+
+ctypes.windll.kernel32.SetConsoleTitleW(f"Anti-Bad-Words a project by jxd | don't skid")
+
+t = input(Fore.CYAN + "Bot Token: ")
+class MyClient(discord.Client):
+
+    async def on_ready(self):
+        await client.change_presence(activity=discord.Streaming(name="Removing Evil", url="https://twitch.tv/crewmate"))
+        print(Fore.GREEN + 'Logged on as', self.user)
+
+#warning this line is for 18+ i say you shouldnt view this
+    async def on_message(self, message):
+        word_list = ['Slave', 'Slut', 'Whore', 'Dick', 'Fuck', 'Sex', 'Nigger', 'Nigga', 'Retard', 'Cock', 'Boobs', 'Balls', 'Pussy', 'Anal', 'Blowjob', 'Fucking', 'Motherfucker', 'Porn',  'Fuckin', 'Dumbass', 'Asshole', 'Bitch', 'Hentai', 'Shit', 'Gore', 'nigga', 'nigger', 'fuck', 'fuckin', 'fucking', 'bitch', 'motherfucker', 'dick', 'boobs', 'slave', 'whore', 'sex', 'hentai', 'porn', 'asshole', 'shit', 'dumbass', 'cock', 'dick', 'balls', 'gore']
+
+        # don't respond to ourselves
+        if message.author == self.user:
+            return
+
+        messageContent = message.content
+        if len(messageContent) > 0:
+            for word in word_list:
+                if word in messageContent:
+                    await message.delete()
+                    await message.channel.send('Do not say that!')
+            
+        messageattachments = message.attachments
+        if len(messageattachments) > 0:
+            for attachment in messageattachments:
+                if attachment.filename.endswith(".dll"):
+                    await message.delete()
+                    await message.channel.send("No virus is allowed!")
+                if attachment.filename.endswith(".bat"):
+                    await message.delete()
+                    await message.channel.send("No virus is allowed!")
+                elif attachment.filename.endswith('.exe'):
+                    await message.delete()
+                    await message.channel.send("No virus is allowed!")
+                else:
+                    break
+
+client = MyClient()
+try:
+ client.run(t, bot=True)
+except discord.LoginFailure:
+ print(Fore.RED + "Invalid Token")
+time.sleep(500)
